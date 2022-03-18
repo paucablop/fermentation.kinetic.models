@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="kineticmodles",
+    name="kineticmodels",
     version_config=True,
     setup_requires=['setuptools-git-versioning'],
     author="Pau Cabaneros",
