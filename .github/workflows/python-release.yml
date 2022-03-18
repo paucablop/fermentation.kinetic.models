@@ -1,42 +1,19 @@
-name: Python release
+name: Publish Python 🐍 distributions 📦 to PyPI and TestPyPI
 
-on:
-  release:
-    types: [published]
+on: release
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 5
+  build-n-publish:
+    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+    runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@master
     - name: Set up Python 3.9
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v1
       with:
         python-version: 3.9
-    - name: Install dependencies
-      run: |
-        pip install flake8 twine pytest wheel setuptools build
-        if [ -f requirements.txt ]
-        then
-          pip install \
-          -r requirements.txt
-        fi
-    - name: Lint with flake8
-      run: |
-        flake8 . \
-        --count \
-        --select=E9,F63,F7,F82 \
-        --show-source \
-        --statistics \
-        --exit-zero \
-        --max-complexity=10 \
-        --max-line-length=127
-    - name: Test with pytest
-      run: |
-        PYTHONPATH=./src pytest
+
     - name: Install pypa/build
       run: >-
         python -m
@@ -56,8 +33,6 @@ jobs:
       with:
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
-        skip_existing: true
-        --verbose
     - name: Publish distribution 📦 to PyPI
       if: startsWith(github.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@master
