@@ -1,0 +1,47 @@
+name: Python release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        pip install flake8 twine pytest wheel setuptools build
+        if [ -f requirements.txt ]
+        then
+          pip install \
+          -r requirements.txt
+        fi
+    - name: Lint with flake8
+      run: |
+        flake8 . \
+        --count \
+        --select=E9,F63,F7,F82 \
+        --show-source \
+        --statistics \
+        --exit-zero \
+        --max-complexity=10 \
+        --max-line-length=127
+    - name: Test with pytest
+      run: |
+        PYTHONPATH=./src pytest
+    - name: Python build release
+      run: |
+        python -m build
+    - name: Release to nexus
+      run: |
+        python -m twine upload dist/* \
+        --username '${{ secrets.PYPI_USERNAME }}' \
+        --password '${{ secrets.PYPI_PASSWORD }}'
