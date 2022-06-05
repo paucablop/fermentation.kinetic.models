@@ -1,61 +1,78 @@
-import numpy as np
-
-
 class Monod:
-    def rate(
-        substrate_concentration: float, max_uptake_rate: float, affinity_constant: float
-    ) -> float:
+    def __init__(self, max_uptake_rate: float, affinity_constant: float) -> None:
+        self.max_uptake_rate = max_uptake_rate
+        self.affinity_constant = affinity_constant
+
+    def calculate_rate(self, substrate_concentration: float) -> float:
         return (
-            max_uptake_rate
+            self.max_uptake_rate
             * substrate_concentration
-            / (affinity_constant + substrate_concentration)
+            / (self.affinity_constant + substrate_concentration)
         )
 
 
 class MonodSubstrateInhibition:
-    def rate(
-        substrate_concentration: float,
+    def __init__(
+        self,
         max_uptake_rate: float,
         affinity_constant: float,
         inhibition_constant: float,
-    ) -> float:
+    ) -> None:
+        self.max_uptake_rate = max_uptake_rate
+        self.affinity_constant = affinity_constant
+        self.inhibition_constant = inhibition_constant
+
+    def calculate_rate(self, substrate_concentration: float) -> float:
         return (
-            max_uptake_rate
+            self.max_uptake_rate
             * substrate_concentration
             / (
-                affinity_constant
+                self.affinity_constant
                 + substrate_concentration
-                + (substrate_concentration**2) / inhibition_constant
+                + (substrate_concentration**2) / self.inhibition_constant
             )
         )
 
 
 class MonodSubstrateCompetitiveInhibition:
-    def rate(
-        substrate_concentration: float,
+    def __init__(
+        self,
         max_uptake_rate: float,
         affinity_constant: float,
         inhibition_constant: float,
+    ) -> None:
+        self.max_uptake_rate = max_uptake_rate
+        self.affinity_constant = affinity_constant
+        self.inhibition_constant = inhibition_constant
+
+    def calculate_rate(
+        self,
+        substrate_concentration: float,
     ) -> float:
-        return max_uptake_rate / (
-            (1.0 + affinity_constant / substrate_concentration)
-            * (1.0 + substrate_concentration / inhibition_constant)
+        return self.max_uptake_rate / (
+            (1.0 + self.affinity_constant / substrate_concentration)
+            * (1.0 + substrate_concentration / self.inhibition_constant)
         )
 
 
 class MonodSubstrateNonCompetitiveInhibition:
-    def rate(
-        substrate_concentration: float,
+    def __init__(
+        self,
         max_uptake_rate: float,
         affinity_constant: float,
         inhibition_constant: float,
-    ) -> float:
+    ) -> None:
+        self.max_uptake_rate = max_uptake_rate
+        self.affinity_constant = affinity_constant
+        self.inhibition_constant = inhibition_constant
+
+    def calculate_rate(self, substrate_concentration: float) -> float:
         return (
-            max_uptake_rate
+            self.max_uptake_rate
             * substrate_concentration
             / (
-                affinity_constant
-                * (1.0 + substrate_concentration / inhibition_constant)
+                self.affinity_constant
+                * (1.0 + substrate_concentration / self.inhibition_constant)
                 + substrate_concentration
             )
         )
