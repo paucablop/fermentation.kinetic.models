@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setuptools.setup(
     name="kineticmodels",
     version_config=True,
-    setup_requires=['setuptools-git-versioning'],
+    setup_requires=["setuptools-git-versioning"],
     author="Pau Cabaneros",
     author_email="pau.cabaneros@gmail.com",
     description="tool including most used function.",
@@ -23,11 +23,9 @@ setuptools.setup(
     ],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
-    python_requires="==3.10.4",
+    python_requires=">=3.10",
     install_requires=[
-        'numpy',
-        'pytest',
-        ]
-
+        "numpy",
+        "pytest",
+    ],
 )
-
