@@ -1,7 +1,18 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class Monod:
-    def __init__(self, max_uptake_rate: float, affinity_constant: float) -> None:
-        self.max_uptake_rate = max_uptake_rate
-        self.affinity_constant = affinity_constant
+    """
+    Monod uptake model.
+    """
+
+    max_uptake_rate: float
+    affinity_constant: float
+
+    @classmethod
+    def fromdict(cls, d: dict) -> "Monod":
+        return cls(**d)
 
     def calculate_rate(self, substrate_concentration: float) -> float:
         return (
@@ -11,16 +22,19 @@ class Monod:
         )
 
 
+@dataclass
 class MonodSubstrateInhibition:
-    def __init__(
-        self,
-        max_uptake_rate: float,
-        affinity_constant: float,
-        inhibition_constant: float,
-    ) -> None:
-        self.max_uptake_rate = max_uptake_rate
-        self.affinity_constant = affinity_constant
-        self.inhibition_constant = inhibition_constant
+    """
+    Monod uptake model with substrate inhibition.
+    """
+
+    max_uptake_rate: float
+    affinity_constant: float
+    inhibition_constant: float
+
+    @classmethod
+    def fromdict(cls, d: dict) -> "MonodSubstrateInhibition":
+        return cls(**d)
 
     def calculate_rate(self, substrate_concentration: float) -> float:
         return (
@@ -34,16 +48,19 @@ class MonodSubstrateInhibition:
         )
 
 
+@dataclass
 class MonodSubstrateCompetitiveInhibition:
-    def __init__(
-        self,
-        max_uptake_rate: float,
-        affinity_constant: float,
-        inhibition_constant: float,
-    ) -> None:
-        self.max_uptake_rate = max_uptake_rate
-        self.affinity_constant = affinity_constant
-        self.inhibition_constant = inhibition_constant
+    """
+    Monod uptake model with competitive substrate inhibition.
+    """
+
+    max_uptake_rate: float
+    affinity_constant: float
+    inhibition_constant: float
+
+    @classmethod
+    def fromdict(cls, d: dict) -> "MonodSubstrateCompetitiveInhibition":
+        return cls(**d)
 
     def calculate_rate(
         self,
@@ -55,16 +72,19 @@ class MonodSubstrateCompetitiveInhibition:
         )
 
 
+@dataclass
 class MonodSubstrateNonCompetitiveInhibition:
-    def __init__(
-        self,
-        max_uptake_rate: float,
-        affinity_constant: float,
-        inhibition_constant: float,
-    ) -> None:
-        self.max_uptake_rate = max_uptake_rate
-        self.affinity_constant = affinity_constant
-        self.inhibition_constant = inhibition_constant
+    """
+    Monod uptake model with non-competitive substrate inhibition.
+    """
+
+    max_uptake_rate: float
+    affinity_constant: float
+    inhibition_constant: float
+
+    @classmethod
+    def fromdict(cls, d: dict) -> "MonodSubstrateNonCompetitiveInhibition":
+        return cls(**d)
 
     def calculate_rate(self, substrate_concentration: float) -> float:
         return (
