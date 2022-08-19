@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from src.interfaces.interfaces import IMonod, IMonodInhibition
+from kineticmodels.interfaces import IMonod, IMonodInhibition
 
 
 class Monod(IMonod):

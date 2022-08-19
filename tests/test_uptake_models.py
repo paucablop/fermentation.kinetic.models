@@ -1,4 +1,4 @@
-import src.kineticmodels as km
+import kineticmodels as km
 import pytest
 
 
