@@ -23,9 +23,8 @@ setuptools.setup(
     ],
     package_dir={"": "."},
     packages=setuptools.find_packages(where="."),
-    python_requires=">=3.7",
+    python_requires=">=3.10",
     install_requires=[
-        "numpy",
-        "pytest",
+        "numpy>=1.23.2",
     ],
 )
