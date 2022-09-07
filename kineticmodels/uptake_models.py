@@ -1,33 +1,43 @@
-from kineticmodels.interfaces import IMonod, IMonodInhibition
+from dataclasses import dataclass
+from typing import Annotated
 
-
-class Monod(IMonod):
+@dataclass
+class Monod:
     """
     Monod uptake model.
     """
+    max_uptake_rate: Annotated[float, "1 / secon"]
+    affinity_constant: Annotated[float, "grams / litre"]
 
     @classmethod
     def fromdict(cls, d: dict) -> "Monod":
         return cls(**d)
 
-    def rate(self, substrate_concentration: float) -> float:
+    def rate(self, substrate_concentration:  Annotated[float, "grams / litre"]) -> float:
         return (
             self.max_uptake_rate
             * substrate_concentration
             / (self.affinity_constant + substrate_concentration)
         )
 
+    def __parameters__(self) -> dict:
+        return self.__annotations__
 
-class MonodSubstrateInhibition(IMonodInhibition):
+
+@dataclass
+class MonodSubstrateInhibition:
     """
     Monod uptake model with substrate inhibition.
     """
+    max_uptake_rate: Annotated[float, "1 / secon"]
+    affinity_constant: Annotated[float, "grams / litre"]
+    substrate_inhibition_constant: Annotated[float, "grams / litre"]
 
     @classmethod
     def fromdict(cls, d: dict) -> "MonodSubstrateInhibition":
         return cls(**d)
 
-    def rate(self, substrate_concentration: float) -> float:
+    def rate(self, substrate_concentration:  Annotated[float, "grams / litre"]) -> float:
         return (
             self.max_uptake_rate
             * substrate_concentration
@@ -38,36 +48,50 @@ class MonodSubstrateInhibition(IMonodInhibition):
             )
         )
 
+    def __parameters__(self) -> dict:
+        return self.__annotations__
 
-class MonodSubstrateCompetitiveInhibition(IMonodInhibition):
+
+@dataclass
+class MonodSubstrateNonCompetitiveInhibition:
     """
     Monod uptake model with competitive substrate inhibition.
     """
+    max_uptake_rate: Annotated[float, "1 / secon"]
+    affinity_constant: Annotated[float, "grams / litre"]
+    substrate_inhibition_constant: Annotated[float, "grams / litre"]
 
     @classmethod
-    def fromdict(cls, d: dict) -> "MonodSubstrateCompetitiveInhibition":
+    def fromdict(cls, d: dict) -> "MonodSubstrateNonCompetitiveInhibition":
         return cls(**d)
 
     def rate(
         self,
-        substrate_concentration: float,
+        substrate_concentration:  Annotated[float, "grams / litre"],
     ) -> float:
         return self.max_uptake_rate / (
             (1.0 + self.affinity_constant / substrate_concentration)
             * (1.0 + substrate_concentration / self.substrate_inhibition_constant)
         )
 
+    def __parameters__(self) -> dict:
+        return self.__annotations__
 
-class MonodSubstrateNonCompetitiveInhibition(IMonodInhibition):
+
+@dataclass
+class MonodSubstrateCompetitiveInhibition:
     """
     Monod uptake model with non-competitive substrate inhibition.
     """
+    max_uptake_rate: Annotated[float, "1 / secon"]
+    affinity_constant: Annotated[float, "grams / litre"]
+    substrate_inhibition_constant: Annotated[float, "grams / litre"]
 
     @classmethod
-    def fromdict(cls, d: dict) -> "MonodSubstrateNonCompetitiveInhibition":
+    def fromdict(cls, d: dict) -> "MonodSubstrateCompetitiveInhibition":
         return cls(**d)
 
-    def rate(self, substrate_concentration: float) -> float:
+    def rate(self, substrate_concentration: Annotated[float, "grams / litre"]) -> float:
         return (
             self.max_uptake_rate
             * substrate_concentration
@@ -77,3 +101,6 @@ class MonodSubstrateNonCompetitiveInhibition(IMonodInhibition):
                 + substrate_concentration
             )
         )
+
+    def __parameters__(self) -> dict:
+        return self.__annotations__
