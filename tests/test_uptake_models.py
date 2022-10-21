@@ -136,3 +136,67 @@ def test_monod_substrate_competitive_inhibition_rate_dict():
     rate = kinetics.rate(substrate_concentration)
     # Assert
     assert pytest.approx(rate, 1e-8) == 0.4
+
+
+def test_parameter_annotations():
+    # Arrenge
+    max_uptake_rate = 1.0
+    affinity_constant = 0.5
+    substrate_inhibition_constant = 1.0
+
+    # Act
+    monod_rate = km.Monod(max_uptake_rate, affinity_constant)
+    monod_substrate_inhibition_rate = km.MonodSubstrateInhibition(
+        max_uptake_rate, affinity_constant, substrate_inhibition_constant
+    )
+    monod_substrate_competitive_inhibition_rate = (
+        km.MonodSubstrateCompetitiveInhibition(
+            max_uptake_rate, affinity_constant, substrate_inhibition_constant
+        )
+    )
+    monod_substrate_non_competitive_inhibition_rate = (
+        km.MonodSubstrateNonCompetitiveInhibition(
+            max_uptake_rate, affinity_constant, substrate_inhibition_constant
+        )
+    )
+
+    # Assert
+    assert type(monod_rate.__parameters__()) is dict
+    assert type(monod_substrate_inhibition_rate.__parameters__()) is dict
+    assert type(monod_substrate_competitive_inhibition_rate.__parameters__()) is dict
+    assert (
+        type(monod_substrate_non_competitive_inhibition_rate.__parameters__()) is dict
+    )
+
+
+def test_parameter_annotations_from_dict():
+    # Arrange
+    parameters = {
+        "max_uptake_rate": 1.0,
+        "affinity_constant": 0.5,
+    }
+    parameters_inhibition = {
+        "max_uptake_rate": 1.0,
+        "affinity_constant": 0.5,
+        "substrate_inhibition_constant": 1.0,
+    }
+
+    # Act
+    monod_rate = km.Monod.fromdict(parameters)
+    monod_substrate_inhibition_rate = km.MonodSubstrateInhibition.fromdict(
+        parameters_inhibition
+    )
+    monod_substrate_competitive_inhibition_rate = (
+        km.MonodSubstrateCompetitiveInhibition.fromdict(parameters_inhibition)
+    )
+    monod_substrate_non_competitive_inhibition_rate = (
+        km.MonodSubstrateNonCompetitiveInhibition.fromdict(parameters_inhibition)
+    )
+
+    # Assert
+    assert type(monod_rate.__parameters__()) is dict
+    assert type(monod_substrate_inhibition_rate.__parameters__()) is dict
+    assert type(monod_substrate_competitive_inhibition_rate.__parameters__()) is dict
+    assert (
+        type(monod_substrate_non_competitive_inhibition_rate.__parameters__()) is dict
+    )
